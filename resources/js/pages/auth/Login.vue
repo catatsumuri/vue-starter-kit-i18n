@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Form, Head, setLayoutProps } from '@inertiajs/vue3';
 import { useLang } from '@erag/lang-sync-inertia/vue';
+import { watchEffect } from 'vue';
 import InputError from '@/components/InputError.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
 import TextLink from '@/components/TextLink.vue';
@@ -20,10 +21,12 @@ import PasskeyVerify from '@/components/PasskeyVerify.vue';
 
 const { __ } = useLang();
 
-setLayoutProps({
-    title: __('Log in to your account'),
-    description: __('Enter your email and password below to log in'),
-});
+watchEffect(() =>
+    setLayoutProps({
+        title: __('Log in to your account'),
+        description: __('Enter your email and password below to log in'),
+    }),
+);
 
 defineProps<{
     status?: string;

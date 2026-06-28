@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Form, Head, setLayoutProps } from '@inertiajs/vue3';
+import { watchEffect } from 'vue';
 import { useLang } from '@erag/lang-sync-inertia/vue';
 import InputError from '@/components/InputError.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
@@ -17,12 +18,14 @@ import PasskeyVerify from '@/components/PasskeyVerify.vue';
 
 const { __ } = useLang();
 
-setLayoutProps({
-    title: __('Confirm password'),
-    description: __(
-        'This is a secure area of the application. Please confirm your password before continuing.',
-    ),
-});
+watchEffect(() =>
+    setLayoutProps({
+        title: __('Confirm password'),
+        description: __(
+            'This is a secure area of the application. Please confirm your password before continuing.',
+        ),
+    }),
+);
 </script>
 
 <template>

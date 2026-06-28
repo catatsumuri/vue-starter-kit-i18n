@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Form, Head, setLayoutProps } from '@inertiajs/vue3';
+import { watchEffect } from 'vue';
 import { useLang } from '@erag/lang-sync-inertia/vue';
 import InputError from '@/components/InputError.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
@@ -17,10 +18,12 @@ defineProps<{
     passwordRules: string;
 }>();
 
-setLayoutProps({
-    title: __('Create an account'),
-    description: __('Enter your details below to create your account'),
-});
+watchEffect(() =>
+    setLayoutProps({
+        title: __('Create an account'),
+        description: __('Enter your details below to create your account'),
+    }),
+);
 </script>
 
 <template>

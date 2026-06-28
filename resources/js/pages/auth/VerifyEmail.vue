@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Form, Head, setLayoutProps } from '@inertiajs/vue3';
+import { watchEffect } from 'vue';
 import { useLang } from '@erag/lang-sync-inertia/vue';
 import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
@@ -9,12 +10,14 @@ import { send } from '@/routes/verification';
 
 const { __ } = useLang();
 
-setLayoutProps({
-    title: __('Email verification'),
-    description: __(
-        'Please verify your email address by clicking on the link we just emailed to you.',
-    ),
-});
+watchEffect(() =>
+    setLayoutProps({
+        title: __('Email verification'),
+        description: __(
+            'Please verify your email address by clicking on the link we just emailed to you.',
+        ),
+    }),
+);
 
 defineProps<{
     status?: string;

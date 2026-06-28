@@ -15,7 +15,11 @@ const locale = computed(() => page.props.locale);
 const locales = computed(() => page.props.locales);
 
 function handleChange(value: string) {
-    router.post(switchMethod.url(), { locale: value }, { preserveScroll: true });
+    router.post(
+        switchMethod.url(),
+        { locale: value },
+        { preserveScroll: true },
+    );
 }
 </script>
 

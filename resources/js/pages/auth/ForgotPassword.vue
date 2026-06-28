@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Form, Head, setLayoutProps } from '@inertiajs/vue3';
+import { watchEffect } from 'vue';
 import { useLang } from '@erag/lang-sync-inertia/vue';
 import InputError from '@/components/InputError.vue';
 import TextLink from '@/components/TextLink.vue';
@@ -12,10 +13,12 @@ import { email } from '@/routes/password';
 
 const { __ } = useLang();
 
-setLayoutProps({
-    title: __('Forgot password'),
-    description: __('Enter your email to receive a password reset link'),
-});
+watchEffect(() =>
+    setLayoutProps({
+        title: __('Forgot password'),
+        description: __('Enter your email to receive a password reset link'),
+    }),
+);
 
 defineProps<{
     status?: string;

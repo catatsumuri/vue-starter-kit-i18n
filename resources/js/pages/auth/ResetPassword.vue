@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Form, Head, setLayoutProps } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { useLang } from '@erag/lang-sync-inertia/vue';
 import InputError from '@/components/InputError.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
@@ -12,10 +12,12 @@ import { update } from '@/routes/password';
 
 const { __ } = useLang();
 
-setLayoutProps({
-    title: __('Reset password'),
-    description: __('Please enter your new password below'),
-});
+watchEffect(() =>
+    setLayoutProps({
+        title: __('Reset password'),
+        description: __('Please enter your new password below'),
+    }),
+);
 
 const props = defineProps<{
     token: string;
