@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { AlertCircle } from '@lucide/vue';
+import { useLang } from '@erag/lang-sync-inertia/vue';
 import { computed } from 'vue';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+
+const { __ } = useLang();
 
 type Props = {
     errors: string[];
@@ -9,7 +12,7 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
-    title: 'Something went wrong.',
+    title: () => __('Something went wrong.'),
 });
 
 const uniqueErrors = computed(() => Array.from(new Set(props.errors)));

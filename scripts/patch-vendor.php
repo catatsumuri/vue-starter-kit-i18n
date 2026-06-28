@@ -42,7 +42,7 @@ foreach ($targets as $patchFile => $vendorFile) {
 
     $patch = json_decode(file_get_contents($patchFile), true);
     $vendor = json_decode(file_get_contents($vendorFile), true);
-    $merged = $vendor + $patch;
+    $merged = array_merge($vendor, $patch);
     ksort($merged);
 
     file_put_contents($vendorFile, json_encode($merged, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)."\n");

@@ -37,7 +37,11 @@ const passwordInput = useTemplateRef('passwordInput');
             <div class="relative space-y-0.5 text-red-600 dark:text-red-100">
                 <p class="font-medium">{{ __('Warning') }}</p>
                 <p class="text-sm">
-                    Please proceed with caution, this cannot be undone.
+                    {{
+                        __(
+                            'Please proceed with caution, this cannot be undone.',
+                        )
+                    }}
                 </p>
             </div>
             <Dialog>
@@ -68,7 +72,7 @@ const passwordInput = useTemplateRef('passwordInput');
                             <DialogDescription>
                                 {{
                                     __(
-                                        'Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.',
+                                        'Once your account is deleted, all of its resources and data will also be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.',
                                     )
                                 }}
                             </DialogDescription>

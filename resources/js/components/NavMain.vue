@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
+import { useLang } from '@erag/lang-sync-inertia/vue';
 import {
     SidebarGroup,
     SidebarGroupLabel,
@@ -14,12 +15,13 @@ defineProps<{
     items: NavItem[];
 }>();
 
+const { __ } = useLang();
 const { isCurrentUrl } = useCurrentUrl();
 </script>
 
 <template>
     <SidebarGroup class="px-2 py-0">
-        <SidebarGroupLabel>Platform</SidebarGroupLabel>
+        <SidebarGroupLabel>{{ __('Platform') }}</SidebarGroupLabel>
         <SidebarMenu>
             <SidebarMenuItem v-for="item in items" :key="item.title">
                 <SidebarMenuButton
