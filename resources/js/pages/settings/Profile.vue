@@ -23,7 +23,7 @@ defineOptions({
     layout: {
         breadcrumbs: [
             {
-                title: __('Profile settings'),
+                title: 'Profile settings',
                 href: edit(),
             },
         ],
