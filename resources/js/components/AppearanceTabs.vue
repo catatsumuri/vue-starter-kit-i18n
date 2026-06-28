@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { Monitor, Moon, Sun } from '@lucide/vue';
+import { useLang } from '@erag/lang-sync-inertia/vue';
 import { useAppearance } from '@/composables/useAppearance';
 
+const { __ } = useLang();
 const { appearance, updateAppearance } = useAppearance();
 
 const tabs = [
@@ -27,7 +29,7 @@ const tabs = [
             ]"
         >
             <component :is="Icon" class="-ml-1 h-4 w-4" />
-            <span class="ml-1.5 text-sm">{{ label }}</span>
+            <span class="ml-1.5 text-sm">{{ __(label) }}</span>
         </button>
     </div>
 </template>

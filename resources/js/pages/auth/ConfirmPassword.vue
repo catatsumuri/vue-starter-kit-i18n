@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Form, Head } from '@inertiajs/vue3';
+import { Form, Head, setLayoutProps } from '@inertiajs/vue3';
+import { useLang } from '@erag/lang-sync-inertia/vue';
 import InputError from '@/components/InputError.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
 import { Button } from '@/components/ui/button';
@@ -14,17 +15,18 @@ import {
 import PasskeyVerify from '@/components/PasskeyVerify.vue';
 /* @end-chisel-passkeys */
 
-defineOptions({
-    layout: {
-        title: 'Confirm password',
-        description:
-            'This is a secure area of the application. Please confirm your password before continuing.',
-    },
+const { __ } = useLang();
+
+setLayoutProps({
+    title: __('Confirm password'),
+    description: __(
+        'This is a secure area of the application. Please confirm your password before continuing.',
+    ),
 });
 </script>
 
 <template>
-    <Head title="Confirm password" />
+    <Head :title="__('Confirm password')" />
 
     <!-- @chisel-passkeys -->
     <PasskeyVerify
@@ -32,9 +34,9 @@ defineOptions({
             options: confirmOptions(),
             submit: confirmStore(),
         }"
-        label="Confirm with passkey"
-        loading-label="Confirming..."
-        separator="Or confirm with password"
+        :label="__('Confirm with passkey')"
+        :loading-label="__('Confirming...')"
+        :separator="__('Or confirm with password')"
     />
     <!-- @end-chisel-passkeys -->
 
@@ -45,7 +47,7 @@ defineOptions({
     >
         <div class="space-y-6">
             <div class="grid gap-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{{ __('Password') }}</Label>
                 <PasswordInput
                     id="password"
                     name="password"
@@ -65,7 +67,7 @@ defineOptions({
                     data-test="confirm-password-button"
                 >
                     <Spinner v-if="processing" />
-                    Confirm password
+                    {{ __('Confirm password') }}
                 </Button>
             </div>
         </div>

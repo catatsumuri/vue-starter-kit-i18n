@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { KeyRound, Trash2 } from '@lucide/vue';
 import { ref } from 'vue';
+import { useLang } from '@erag/lang-sync-inertia/vue';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -12,6 +13,8 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import type { Passkey } from '@/types/auth';
+
+const { __ } = useLang();
 
 const props = defineProps<{
     passkey: Passkey;
@@ -50,10 +53,20 @@ const handleDelete = () => {
                     </span>
                 </div>
                 <p class="text-sm text-muted-foreground">
-                    Added {{ passkey.created_at_diff }}
+                    {{
+                        __('Added :time').replace(
+                            ':time',
+                            passkey.created_at_diff,
+                        )
+                    }}
                     <template v-if="passkey.last_used_at_diff">
                         <span class="mx-1 text-muted-foreground/50">/</span>
-                        Last used {{ passkey.last_used_at_diff }}
+                        {{
+                            __('Last used :time').replace(
+                                ':time',
+                                passkey.last_used_at_diff,
+                            )
+                        }}
                     </template>
                 </p>
             </div>
@@ -67,26 +80,33 @@ const handleDelete = () => {
                     class="text-destructive hover:bg-destructive/10 hover:text-destructive"
                 >
                     <Trash2 class="h-4 w-4" />
-                    <span class="sr-only">Remove</span>
+                    <span class="sr-only">{{ __('Remove') }}</span>
                 </Button>
             </DialogTrigger>
 
             <DialogContent>
-                <DialogTitle>Remove passkey</DialogTitle>
+                <DialogTitle>{{ __('Remove passkey') }}</DialogTitle>
                 <DialogDescription>
-                    Are you sure you want to remove the "{{ passkey.name }}"
-                    passkey? You will no longer be able to use it to sign in.
+                    {{
+                        __(
+                            'Are you sure you want to remove the ":name" passkey? You will no longer be able to use it to sign in.',
+                        ).replace(':name', passkey.name)
+                    }}
                 </DialogDescription>
                 <DialogFooter class="gap-2">
                     <DialogClose as-child>
-                        <Button variant="secondary">Cancel</Button>
+                        <Button variant="secondary">{{ __('Cancel') }}</Button>
                     </DialogClose>
                     <Button
                         variant="destructive"
                         :disabled="isDeleting"
                         @click="handleDelete"
                     >
-                        {{ isDeleting ? 'Removing...' : 'Remove passkey' }}
+                        {{
+                            isDeleting
+                                ? __('Removing...')
+                                : __('Remove passkey')
+                        }}
                     </Button>
                 </DialogFooter>
             </DialogContent>
