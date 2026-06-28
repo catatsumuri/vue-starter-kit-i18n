@@ -32,6 +32,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from '@/components/ui/tooltip';
+import LocaleSwitcher from '@/components/LocaleSwitcher.vue';
 import UserMenuContent from '@/components/UserMenuContent.vue';
 import { useCurrentUrl } from '@/composables/useCurrentUrl';
 import { getInitials } from '@/composables/useInitials';
@@ -241,6 +242,7 @@ const rightNavItems = computed<NavItem[]>(() => [
                         </div>
                     </div>
 
+                    <LocaleSwitcher />
                     <DropdownMenu>
                         <DropdownMenuTrigger :as-child="true">
                             <Button
