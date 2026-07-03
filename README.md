@@ -1,27 +1,113 @@
-# Laravel + Vue Starter Kit
+# Laravel + Vue Starter Kit — i18n Edition
 
-## Introduction
+A fork of the official [Laravel Vue starter kit](https://laravel.com/docs/starter-kits) with internationalization (i18n) built in.
 
-Our Vue starter kit provides a robust, modern starting point for building Laravel applications with a Vue frontend using [Inertia](https://inertiajs.com).
+## What's different from the official kit
 
-Inertia allows you to build modern, single-page Vue applications using classic server-side routing and controllers. This lets you enjoy the frontend power of Vue combined with the incredible backend productivity of Laravel and lightning-fast Vite compilation.
+- **Japanese pre-configured** — `ja` locale ships ready to use alongside `en`
+- **Translation pipeline** — `lang/vendor-patches/` controls which locales are generated; add a JSON file, run `lang:update`, done
+- **Translations in Vue** — `__()` helper available in all Vue components via Inertia shared props
+- **Session-based locale persistence** — active locale survives page reloads via `LocalizationBySession` middleware
 
-This Vue starter kit utilizes Vue 3 and the Composition API, TypeScript, Tailwind, and the [shadcn-vue](https://www.shadcn-vue.com) component library.
+## Requirements
 
-## Official Documentation
+- PHP 8.3+
+- Node 20+
+- A database supported by Laravel (SQLite works for local dev)
 
-Documentation for all Laravel starter kits can be found on the [Laravel website](https://laravel.com/docs/starter-kits).
+## Adding a locale
 
-## Contributing
+Strings that only exist in this fork's Vue UI (login/2FA/profile screens, etc.) aren't part of the upstream `laravel-lang/starter-kits` package, so they're layered on top of it via `lang/vendor-patches/`:
 
-Thank you for considering contributing to our starter kit! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- `lang/vendor-patches/source/vue.json` — the English source strings this fork adds on top of the upstream `vue.json`.
+- `lang/vendor-patches/locales/{locale}.json` — translations of those strings for one locale. See `lang/vendor-patches/locales/ja.json` for a complete example.
 
-All contributions to the Starter Kits from now on should be made through [Maestro](https://github.com/laravel/maestro).
+To add a new locale (e.g. `ko`):
 
-## Code of Conduct
+1. If your components use custom strings not already listed in `lang/vendor-patches/source/vue.json`, add them there first (English key/value pairs).
+2. Create `lang/vendor-patches/locales/ko.json` and translate every key from `source/vue.json`, following the same structure as `lang/vendor-patches/locales/ja.json`. A key can be left out only if upstream already ships a translation for it in that locale (`ja.json` skips `"Warning"` for this reason) — when in doubt, translate it anyway; the patch just overrides the upstream value.
+3. Merge the patches into the vendor package and regenerate the translation files:
+   ```bash
+   composer patch-vendor
+   php artisan lang:update
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+`composer patch-vendor` (`scripts/patch-vendor.php`) merges everything under `lang/vendor-patches/source/` and `lang/vendor-patches/locales/` into the matching files inside `vendor/laravel-lang/starter-kits/`, taking your patch values over the upstream ones. `lang:update` then regenerates `lang/{locale}.json` and `lang/{locale}/*.php` for every locale it finds. `patch-vendor` also runs automatically after `composer install`/`composer update`, and `lang:update` runs automatically after `composer update` — but for a newly added locale, run both explicitly so the new locale is generated immediately.
+
+## Installation
+
+```bash
+laravel new my-app --using=https://github.com/catatsumuri/vue-starter-kit-i18n
+cd my-app
+composer setup
+```
+
+`composer setup` does the following in one shot:
+
+```
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+npm install
+npm run build
+```
+
+## Development
+
+```bash
+composer dev
+```
+
+Starts four processes concurrently:
+
+| Process | Command |
+|---------|---------|
+| HTTP server | `php artisan serve` |
+| Queue worker | `php artisan queue:listen` |
+| Log viewer | `php artisan pail` |
+| Vite dev server | `npm run dev` |
+
+## Architecture
+
+### Backend packages
+
+| Package | Role |
+|---------|------|
+| `laravel-lang/common` | Core translation pipeline (`lang:update` command) |
+| `laravel-lang/routes` | `LocalizationBySession` middleware |
+| `erag/laravel-lang-sync-inertia` | Syncs `lang/{locale}.json` to Inertia shared props as `lang` |
+| `laravel/wayfinder` | Type-safe route references on the frontend |
+
+### Frontend
+
+- Vue 3 (Composition API) + TypeScript + Vite
+- [shadcn-vue](https://www.shadcn-vue.com) + [Reka UI](https://reka-ui.com) components
+- Tailwind CSS
+- `@erag/lang-sync-inertia` — `lang()` / `__()` composable for translations in Vue components
+
+### How translations reach the frontend
+
+```
+lang/ja.json
+    ↓  HandleInertiaRequests::share()
+Inertia shared prop: { lang: { "Log in": "ログイン", ... } }
+    ↓  @erag/lang-sync-inertia
+const { __ } = lang()
+    ↓
+__('Log in')  →  "ログイン"
+```
+
+## Code quality
+
+```bash
+composer lint          # PHP (Pint)
+npm run lint           # JS/TS (ESLint)
+npm run types:check    # TypeScript
+composer test          # PHPUnit / Pest
+composer ci:check      # all of the above
+```
 
 ## License
 
-The Laravel + Vue starter kit is open-sourced software licensed under the MIT license.
+MIT
