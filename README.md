@@ -37,7 +37,7 @@ To add a new locale (e.g. `ko`):
 ## Installation
 
 ```bash
-laravel new my-app --using=https://github.com/catatsumuri/vue-starter-kit-i18n
+laravel new my-app --using=https://github.com/catatsumuri/vue-starter-kit-i18n#feature/locale-switcher
 cd my-app
 composer setup
 ```
