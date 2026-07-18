@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Form, Head, usePage } from '@inertiajs/vue3';
+import { Form, Head, setLayoutProps, usePage } from '@inertiajs/vue3';
 /* @chisel-email-verification */
 import { Link } from '@inertiajs/vue3';
 /* @end-chisel-email-verification */
@@ -19,15 +19,13 @@ import { send } from '@/routes/verification';
 
 const { __ } = useLang();
 
-defineOptions({
-    layout: {
-        breadcrumbs: [
-            {
-                title: __('Profile settings'),
-                href: edit(),
-            },
-        ],
-    },
+setLayoutProps({
+    breadcrumbs: [
+        {
+            title: __('Profile settings'),
+            href: edit(),
+        },
+    ],
 });
 
 const page = usePage();

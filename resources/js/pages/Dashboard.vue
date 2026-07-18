@@ -1,20 +1,18 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
+import { Head, setLayoutProps } from '@inertiajs/vue3';
 import { useLang } from '@erag/lang-sync-inertia/vue';
 import PlaceholderPattern from '@/components/PlaceholderPattern.vue';
 import { dashboard } from '@/routes';
 
 const { __ } = useLang();
 
-defineOptions({
-    layout: {
-        breadcrumbs: [
-            {
-                title: __('Dashboard'),
-                href: dashboard(),
-            },
-        ],
-    },
+setLayoutProps({
+    breadcrumbs: [
+        {
+            title: __('Dashboard'),
+            href: dashboard(),
+        },
+    ],
 });
 </script>
 

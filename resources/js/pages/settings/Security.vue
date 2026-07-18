@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Form, Head } from '@inertiajs/vue3';
+import { Form, Head, setLayoutProps } from '@inertiajs/vue3';
 import { useLang } from '@erag/lang-sync-inertia/vue';
 import SecurityController from '@/actions/App/Http/Controllers/Settings/SecurityController';
 import Heading from '@/components/Heading.vue';
@@ -26,15 +26,13 @@ const props = defineProps<Props>();
 
 const { __ } = useLang();
 
-defineOptions({
-    layout: {
-        breadcrumbs: [
-            {
-                title: __('Security settings'),
-                href: edit(),
-            },
-        ],
-    },
+setLayoutProps({
+    breadcrumbs: [
+        {
+            title: __('Security settings'),
+            href: edit(),
+        },
+    ],
 });
 </script>
 

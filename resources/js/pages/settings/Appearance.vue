@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
+import { Head, setLayoutProps } from '@inertiajs/vue3';
 import { useLang } from '@erag/lang-sync-inertia/vue';
 import AppearanceTabs from '@/components/AppearanceTabs.vue';
 import Heading from '@/components/Heading.vue';
@@ -7,15 +7,13 @@ import { edit } from '@/routes/appearance';
 
 const { __ } = useLang();
 
-defineOptions({
-    layout: {
-        breadcrumbs: [
-            {
-                title: __('Appearance settings'),
-                href: edit(),
-            },
-        ],
-    },
+setLayoutProps({
+    breadcrumbs: [
+        {
+            title: __('Appearance settings'),
+            href: edit(),
+        },
+    ],
 });
 </script>
 
